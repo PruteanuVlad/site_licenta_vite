@@ -19,20 +19,27 @@
     "storybook:build": "storybook build"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.3.1",
     "@mantine/code-highlight": "^7.3.1",
     "@mantine/core": "^7.3.1",
     "@mantine/dates": "^7.3.1",
     "@mantine/hooks": "^7.3.1",
     "@mantine/notifications": "^7.3.1",
+    "@tabler/icons-react": "^2.44.0",
     "axios": "^1.6.2",
+    "chart.js": "^4.4.1",
+    "chartjs-plugin-zoom": "^2.0.1",
     "dayjs": "^1.11.10",
+    "faker": "^6.6.6",
     "plotly": "^1.0.6",
     "plotly.js": "^2.27.1",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-plotly.js": "^2.6.0",
     "react-router-dom": "^6.18.0",
-    "regl": "^2.1.0"
+    "regl": "^2.1.0",
+    "tabler": "^1.0.0-alpha.8"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.5.2",
