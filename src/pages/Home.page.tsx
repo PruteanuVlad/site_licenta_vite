@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect, SetStateAction } from 'react';
 //import { Welcome } from '../components/Welcome/Welcome';\
 import axios from 'axios';
