@@ -3,7 +3,7 @@
     border-radius: var(--mantine-radius-md);
     display: flex;
   
-    @media (max-width: $mantine-breakpoint-xs) {
+    @media (max-width: 36em) {
       flex-direction: column;
     }
   }
@@ -72,7 +72,7 @@
     flex-direction: column;
     margin-right: calc(var(--mantine-spacing-xl) * 2);
   
-    @media (max-width: $mantine-breakpoint-xs) {
+    @media (max-width: 36em) {
       flex-direction: row;
       align-items: center;
       margin-right: 0;
@@ -96,19 +96,14 @@
     border-radius: var(--mantine-radius-md);
     transition: background-color 50ms ease;
   
-    @media (max-width: $mantine-breakpoint-xs) {
+    @media (max-width: 36em) {
       height: rem(34px);
       width: rem(34px);
-    }
-  
-    @mixin hover {
-      background-color: var(--mantine-color-blue-5);
-      color: var(--mantine-color-white);
     }
   }
   
   .controlIcon {
-    @media (max-width: $mantine-breakpoint-xs) {
+    @media (max-width: 36em) {
       transform: rotate(-90deg);
     }
   }
