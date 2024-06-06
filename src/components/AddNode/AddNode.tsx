@@ -7,10 +7,7 @@ export function AddNode() {
     const [adresaNod, setAdresa] = useState('');
     const [pin, setPin] = useState('');
     const [tip, setTip] = useState<string | null>('');
-    const dark = colorScheme === 'dark';
-    const style = {
-        backgroundColor: dark ? '#5c5f66' : '#099cff',
-    };
+
     const addNode = async () => {
         try {
             const response = await axios.post('https://site-licenta-10aff3814de1.herokuapp.com/adauga_nod', {
@@ -35,7 +32,7 @@ export function AddNode() {
             onChange={(setTip)}
           />
           <Group justify="center" mt="xl">
-            <Button size="small" style={style} onClick={() => addNode()}>
+            <Button size="small" onClick={() => addNode()}>
                 Adaugă nod
             </Button>
           </Group>

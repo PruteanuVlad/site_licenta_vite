@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IconPlus } from '@tabler/icons-react';
+import addNotification from '@bdhamithkumara/react-push-notification';
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Group, Space, Button, rem, useMantineColorScheme } from '@mantine/core';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
@@ -31,6 +32,15 @@ export function HomePage() {
     };
     fetchNoduri();
   }, []);
+  const buttonClick = () => {
+    addNotification({
+        title: 'Warning',
+        subtitle: 'This is a subtitle',
+        message: 'This is a very long message',
+        theme: 'darkblue',
+        native: true // when using native, your OS will handle theming.
+    });
+};
   window.console.log('type:');
   window.console.log(noduri);
   return (
@@ -38,8 +48,8 @@ export function HomePage() {
       <Header />
       <Space h="lg" />
       {noduri ? (
-        Object.values(noduri).map(idNod => (
-          <NodeCard idNod={idNod} />
+        Object.values(noduri).map(nodeId => (
+          <NodeCard nodeId={nodeId} />
         ))
       ) : (
         <p>Loading...</p>
@@ -61,6 +71,9 @@ export function HomePage() {
             />}
         >
         Adaugă nod
+        </Button>
+        <Button onClick={buttonClick}>
+          Test
         </Button>
       </Group>
       <ColorSchemeToggle />

@@ -7,8 +7,8 @@ export function Header() {
   const { colorScheme } = useMantineColorScheme();
   const dark = colorScheme === 'dark';
   return (
-    <>
-    <Group bg={dark ? '#373A40' : '#099cff'}>
+    <> 
+    <Group bg={dark ? '#373A40' : '#099cff'} style={{ borderBottomLeftRadius: '5px', borderBottomRightRadius: '5px' }}>
       <Burger size="xl" opened={opened} onClick={toggle} aria-label="Toggle navigation" />
       <Title className={classes.title} ta="left" mt={5}> {/* margin-top */}
         Licență{' '}

@@ -9,17 +9,6 @@
     --paper-bg-color : #ffffff;
   }
 
-  .card {
-    padding: 10px;
-    background-color: var(--main-bg-color);
-    border-radius: 10px;
-  }
-
-  .graph {
-    min-height: 200px;
-    max-height: 80%;
-  }
-  
   .icon {
     margin-left: auto;
     margin-right: auto;
@@ -70,25 +59,6 @@
   
   .count {
     color: var(--mantine-color-gray-6);
-  }
-  
-  .day {
-    font-size: rem(44px);
-    font-weight: 700;
-    color: var(--mantine-color-white);
-    line-height: 1;
-    text-align: center;
-    margin-bottom: rem(5px);
-    font-family:
-      Greycliff CF,
-      var(--mantine-font-family);
-  }
-  
-  .month {
-    font-size: var(--mantine-font-size-sm);
-    color: var(--mantine-color-white);
-    line-height: 1;
-    text-align: center;
   }
   
   .controls {

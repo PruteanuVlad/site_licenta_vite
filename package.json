@@ -19,6 +19,7 @@
     "storybook:build": "storybook build"
   },
   "dependencies": {
+    "@bdhamithkumara/react-push-notification": "^1.5.9",
     "@faker-js/faker": "^8.3.1",
     "@mantine/code-highlight": "^7.3.1",
     "@mantine/core": "^7.3.1",
@@ -33,11 +34,12 @@
     "faker": "^6.6.6",
     "plotly": "^1.0.6",
     "plotly.js": "^2.27.1",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-plotly.js": "^2.6.0",
     "react-router-dom": "^6.18.0",
+    "react-toastify": "^10.0.5",
     "regl": "^2.1.0",
     "tabler": "^1.0.0-alpha.8"
   },
@@ -59,6 +61,8 @@
     "@typescript-eslint/eslint-plugin": "^6.9.1",
     "@typescript-eslint/parser": "^6.9.1",
     "@vitejs/plugin-react": "^4.1.1",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "date-fns": "^3.6.0",
     "eslint": "^8.53.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
