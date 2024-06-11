@@ -19,12 +19,12 @@ export function StatCard({ stat, id_node }) {
       document.documentElement.style.setProperty('--main-bg-color', dark ? '#373A40' : '#099cff');
     }, [dark]);
 
-    const postLimits = async (tip, val) => {
+    const postLimits = async (type, val) => {
         try {
-            const response = await axios.post('https://site-licenta-10aff3814de1.herokuapp.com/adauga_limita', {
-                id_nod: id_node,
+            const response = await axios.post('https://site-licenta-10aff3814de1.herokuapp.com/add_limit', {
+                nodeId: id_node,
                 prop: stat.db,
-                tip,
+                type,
                 val,
             });
             window.console.log(response);

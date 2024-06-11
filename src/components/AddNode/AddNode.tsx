@@ -10,7 +10,7 @@ export function AddNode() {
 
     const addNode = async () => {
         try {
-            const response = await axios.post('https://site-licenta-10aff3814de1.herokuapp.com/adauga_nod', {
+            const response = await axios.post('https://site-licenta-10aff3814de1.herokuapp.com/add_node', {
                 adresa: adresaNod,
                 pin,
                 tip: tip?.split(' ')[0],

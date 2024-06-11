@@ -185,9 +185,9 @@ export function NodeCard({ nodeId }) {
 
     useEffect(() => {
       pollData(); // Initial fetch
-      const interval = setInterval(pollData, 60000); // Poll every 10 seconds
+      //const interval = setInterval(pollData, 60000); // Poll every 10 seconds
 
-      return () => clearInterval(interval); // Clean up the interval on component unmount
+      //return () => clearInterval(interval); // Clean up the interval on component unmount
     }, []);
 
     const categorii = ['Temperatură', 'Umiditate', 'Nivel apa', 'Iluminare'];

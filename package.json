@@ -41,7 +41,8 @@
     "react-router-dom": "^6.18.0",
     "react-toastify": "^10.0.5",
     "regl": "^2.1.0",
-    "tabler": "^1.0.0-alpha.8"
+    "tabler": "^1.0.0-alpha.8",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.5.2",
