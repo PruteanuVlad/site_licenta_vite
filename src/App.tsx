@@ -6,9 +6,7 @@ import { Router } from './Router';
 const requestNotificationPermission = async () => {
   const permission = await Notification.requestPermission();
   if (permission === 'granted') {
-    console.log('Notification permission granted.');
-  } else {
-    console.log('Notification permission denied.');
+    console.log('Acord primit.');
   }
 };
 
@@ -33,16 +31,17 @@ export default function App() {
     requestNotificationPermission();
   }, []);
 
-  const handleSubscribe = () => {
-    subscribeUser();
-  };
+  useEffect(() => {
+    const initNotificationSubscription = async () => {
+      subscribeUser();
+    };
+
+    initNotificationSubscription();
+  }, []);
 
   return (
     <MantineProvider>
       <Router />
-      <div>
-      <button type="button" onClick={handleSubscribe}>Subscribe to Notifications</button>
-      </div>
     </MantineProvider>
   );
 }

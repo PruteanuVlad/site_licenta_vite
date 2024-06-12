@@ -134,7 +134,7 @@ export function NodeCard({ nodeId }) {
       { icon: IconMist, label: 'Umiditate', value: umiditate, sufix: '%', db: 'umid', upper_lim: umiditate_sup, lower_lim: umiditate_inf },
       { icon: IconDropletHalf2Filled, label: 'Apă', value: nivel_apa, sufix: '%', db: 'apa', upper_lim: apa_sup, lower_lim: apa_inf },
       { icon: IconBattery2, label: 'Baterie', value: baterie, sufix: '%', db: 'bat', upper_lim: baterie_sup, lower_lim: baterie_inf },
-      { icon: IconLock, label: 'Ușă', value: usa, sufix: '' },
+      //{ icon: IconLock, label: 'Ușă', value: usa, sufix: '' },
     ];
 
     const pollData = async () => {
@@ -155,7 +155,7 @@ export function NodeCard({ nodeId }) {
         response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_limits?prop=umid&type=sup&nodeId=${nodeId}`);
         setUmiditateSup(response.data.value);
 
-        response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_data?meas=nivel_baterie&time=current&nodeId=${nodeId}`);
+        response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_data?meas=baterie&time=current&nodeId=${nodeId}`);
         setBaterie(response.data.values);
         response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_limits?prop=bat&type=inf&nodeId=${nodeId}`);
         setBaterieInf(response.data.value);
@@ -176,8 +176,8 @@ export function NodeCard({ nodeId }) {
         response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_limits?prop=apa&type=sup&nodeId=${nodeId}`);
         setApaSup(response.data.value);
 
-        response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_data?meas=usa&time=current&nodeId=${nodeId}`);
-        setUsa(response.data.values);
+       // response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_data?meas=usa&time=current&nodeId=${nodeId}`);
+        //setUsa(response.data.values);
       } catch (error) {
         console.error('Error fetching data from API 1:', error);
       }
@@ -190,8 +190,8 @@ export function NodeCard({ nodeId }) {
       //return () => clearInterval(interval); // Clean up the interval on component unmount
     }, []);
 
-    const categorii = ['Temperatură', 'Umiditate', 'Nivel apa', 'Iluminare'];
-    const coloane_sql = ['temperatura', 'umiditate', 'nivel_apa', 'iluminare'];
+    const categorii = ['Temperatură', 'Umiditate', 'Nivel apa', 'Iluminare', 'Baterie'];
+    const coloane_sql = ['temperatura', 'umiditate', 'nivel_apa', 'iluminare', 'baterie'];
     const [value, setValue] = useState(0);
     const modifyValue = (amount: SetStateAction<number>) => {
       setValue(amount);
