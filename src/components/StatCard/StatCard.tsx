@@ -7,12 +7,13 @@ import { useState, useEffect, SetStateAction } from 'react';
 import { Text, rem, Switch, TextInput, useMantineColorScheme, Flex } from '@mantine/core';
 import classes from './StatCard.module.css';
 
-export function StatCard({ stat, id_node }) {
+export function StatCard({ stat, id_node, nodeType }) {
     const { colorScheme } = useMantineColorScheme();
 
     const [upper_lim, setUpperLim] = useState(null);
     const [lower_lim, setLoweLim] = useState(null);
-
+    const [isCheckedLight, setIsCheckedLight] = useState(null);
+    const [isCheckedTemp, setIsCheckedTemp] = useState(null);
     const dark = colorScheme === 'dark';
     useEffect(() => {
       document.documentElement.style.setProperty('--paper-bg-color', dark ? '#495057' : '#ffffff');
@@ -27,23 +28,31 @@ export function StatCard({ stat, id_node }) {
                 type,
                 val,
             });
-            window.console.log(response);
-        } catch (error) {
-            window.console.log(error);
-        }
+        } catch (error) { /* empty */ }
     };
+
+    const pollControl = async () => {
+      try {
+        const response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/control?nodeId=${id_node}`);
+        setIsCheckedLight(response.data.control_lumina[0]);
+        setIsCheckedTemp(response.data.control_temp[0]);
+      } catch (error) {
+        console.error('Error fetching data from API 1:', error);
+      }
+    };
+
+    useEffect(() => {
+      pollControl();
+    }, []);
 
     const [value, setValue] = useState(0);
     const modifyValue = (amount: SetStateAction<number>) => {
       setValue(amount);
-      console.log(amount);
     };
     const modifyLimInf = (amount: SetStateAction<number>) => {
-        console.log(amount);
         postLimits('inf', amount);
       };
     const modifyLimSup = (amount: SetStateAction<number>) => {
-        console.log(amount);
         postLimits('sup', amount);
     };
     const [indiceCategorie, setIndiceCategorie] = useState(0);
@@ -59,6 +68,36 @@ export function StatCard({ stat, id_node }) {
         <p>°C</p>
       </div>
     );
+
+    const handleChangeLight = (event) => {
+      setIsCheckedLight(event.currentTarget.checked);
+      const sendPostRequest = async () => {
+        try {
+          const response = await axios.post('https://site-licenta-10aff3814de1.herokuapp.com/control', {
+            nodeId: id_node,
+            temp: isCheckedTemp ? 1 : 0,
+            light: isCheckedLight ? 0 : 1,
+          });
+      } catch (error) { /* empty */ }
+      };
+
+      sendPostRequest();
+    };
+
+    const handleChangeTemp = (event) => {
+      setIsCheckedTemp(event.currentTarget.checked);
+      const sendPostRequest = async () => {
+        try {
+          const response = await axios.post('https://site-licenta-10aff3814de1.herokuapp.com/control', {
+            nodeId: id_node,
+            temp: isCheckedTemp ? 0 : 1,
+            light: isCheckedLight ? 1 : 0,
+        });
+      } catch (error) { /* empty */ }
+      };
+
+      sendPostRequest();
+    };
 
     return (
     <>
@@ -78,32 +117,24 @@ export function StatCard({ stat, id_node }) {
                   stroke={1.5}
                 />
                     <Text className={classes.label}>{stat.label}</Text>
+                    {((nodeType != 2)) && (
                     <Text className={classes.count}>
                     <span className={classes.value}>{stat.value + stat.sufix}</span>
-                    </Text>
-                    {(stat.label == 'Temperatură') && (
-                    <TextInput
-                      value={value}
-                      onChange={(event) => modifyValue(parseInt(event.currentTarget.value, 10))}
-                      style={{ width: '70px' }}
-                      type="number"
-                      styles={(theme) => ({
-                        label: {
-                            whiteSpace: 'nowrap',
-                        },
-                        })}
-                      placeholder="24"
-                      label="Temp. dorită:"
-                      rightSection={rightSideCelsius}
-                      rightSectionWidth={30}
+                    </Text>)}
+                    {(stat.label == 'Temp.' && nodeType > 1) && (
+                    <Switch
+                      checked={isCheckedTemp}
+                      onChange={(event) => handleChangeTemp(event)}
                     />
                     )}
-                    {(stat.label == 'Lumină') && (
+                    {(stat.label == 'Lumină' && nodeType > 1) && (
                     <Switch
-                      defaultChecked
+                      checked={isCheckedLight}
+                      onChange={(event) => handleChangeLight(event)}
                     />
                     )}
                 </div>
+                {((nodeType != 2)) && (
                 <div>
                     {(stat.label != 'Ușă') && (
                     <TextInput
@@ -139,7 +170,7 @@ export function StatCard({ stat, id_node }) {
                       rightSectionWidth={30}
                     />
                     )}
-                </div>
+                </div>)}
             </Flex>
         </div>
     </>

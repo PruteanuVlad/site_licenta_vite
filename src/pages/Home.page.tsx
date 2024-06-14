@@ -28,29 +28,28 @@ export function HomePage() {
     };
   const [opened, { open, close }] = useDisclosure(false);
   const [noduri, setNoduri] = useState(null);
+  const [tip, setTip] = useState(null);
   useEffect(() => {
     // Obtinerea id-urilor nodurilor
     const fetchNoduri = async () => {
       try {
         const response = await axios.get('https://site-licenta-10aff3814de1.herokuapp.com/noduri');
         setNoduri(response.data.id_nod);
-        window.console.log('test');
-      } catch (error) {
-        window.console.log('eroare');
-      }
+        setTip(response.data.tip_nod);
+        console.log(noduri);
+        console.log(tip);
+      } catch (error) { /* empty */ }
     };
     fetchNoduri();
   }, []);
-  window.console.log('type:');
-  window.console.log(noduri);
   return (
     <>
       <Header />
       <Space h="lg" />
-      {noduri ? (
-        Object.values(noduri).map(nodeId => (
-          <NodeCard nodeId={nodeId} />
-        ))
+      {noduri && tip ? (
+      Object.values(noduri).map((nodeId, index) => (
+        <NodeCard nodeId={nodeId} nodeType={tip[index]} />
+      ))
       ) : (
         <p>Loading...</p>
       )}

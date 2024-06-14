@@ -41,12 +41,6 @@
     background-color: var(--paper-bg-color);
   }
 
-  /* Adjustments for larger screens */
-  @media (min-width: 600px) {
-    .statStyle {
-      min-width: rem(220px);
-    }
-  }
   .bgColor {
     background-color: rgb(255, 255, 255);
   }

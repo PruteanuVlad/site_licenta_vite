@@ -33,7 +33,7 @@
   /* Adjustments for larger screens */
   @media (min-width: 600px) {
     .statStyle {
-      min-width: rem(220px);
+      min-width: rem(200px);
     }
   }
   .bgColor {

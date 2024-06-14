@@ -33,10 +33,9 @@ import {
 import classes from './NodeCard.module.css';
 import { StatCard } from '@/components/StatCard/StatCard';
 
-export function NodeCard({ nodeId }) {
+export function NodeCard({ nodeId, nodeType }) {
     const [temperatura, setTemperatura] = useState(false);
     const [umiditate, setUmiditate] = useState(false);
-    const [baterie, setBaterie] = useState(false);
     const [lumina, setLumina] = useState(false);
     const [nivel_apa, setApa] = useState(false);
     const [usa, setUsa] = useState(false);
@@ -48,8 +47,6 @@ export function NodeCard({ nodeId }) {
     const [apa_sup, setApaSup] = useState(0);
     const [lumina_inf, setLuminaInf] = useState(0);
     const [lumina_sup, setLuminaSup] = useState(0);
-    const [baterie_inf, setBaterieInf] = useState(0);
-    const [baterie_sup, setBaterieSup] = useState(0);
     const [xValues_n, setXValues_n] = useState(false);
     const [yValues_n, setYValues_n] = useState(false);
     const { colorScheme } = useMantineColorScheme();
@@ -60,10 +57,7 @@ export function NodeCard({ nodeId }) {
         try {
           const response = await axios.get('https://site-licenta-10aff3814de1.herokuapp.com/noduri');
           setNoduri(response.data.id_nod);
-          window.console.log('test');
-        } catch (error) {
-          window.console.log('eroare');
-        }
+        } catch (error) { /* empty */ }
       };
       fetchNoduri();
     }, []);
@@ -129,12 +123,11 @@ export function NodeCard({ nodeId }) {
     const test = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
     const labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const data = [
-      { icon: IconTemperature, label: 'Temperatură', value: temperatura, sufix: '°C', db: 'temp', upper_lim: temp_sup, lower_lim: temp_inf },
+      { icon: IconTemperature, label: 'Temp.', value: temperatura, sufix: '°C', db: 'temp', upper_lim: temp_sup, lower_lim: temp_inf },
       { icon: IconSun, label: 'Lumină', value: lumina, sufix: ' lx', db: 'lumina', upper_lim: lumina_sup, lower_lim: lumina_inf },
       { icon: IconMist, label: 'Umiditate', value: umiditate, sufix: '%', db: 'umid', upper_lim: umiditate_sup, lower_lim: umiditate_inf },
       { icon: IconDropletHalf2Filled, label: 'Apă', value: nivel_apa, sufix: '%', db: 'apa', upper_lim: apa_sup, lower_lim: apa_inf },
-      { icon: IconBattery2, label: 'Baterie', value: baterie, sufix: '%', db: 'bat', upper_lim: baterie_sup, lower_lim: baterie_inf },
-      //{ icon: IconLock, label: 'Ușă', value: usa, sufix: '' },
+      { icon: IconLock, label: 'Ușă', value: usa, sufix: '' },
     ];
 
     const pollData = async () => {
@@ -142,25 +135,16 @@ export function NodeCard({ nodeId }) {
         let response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_data?meas=temperatura&time=current&nodeId=${nodeId}`);
         setTemperatura(response.data.values);
         response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_limits?prop=temp&type=inf&nodeId=${nodeId}`);
-        console.log('temp_inf');
-        console.log(response.data.value);
         setTempInf(response.data.value);
         response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_limits?prop=temp&type=sup&nodeId=${nodeId}`);
         setTempSup(response.data.value);
-
+        console.log(nodeType);
         response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_data?meas=umiditate&time=current&nodeId=${nodeId}`);
         setUmiditate(response.data.values);
         response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_limits?prop=umid&type=inf&nodeId=${nodeId}`);
         setUmiditateInf(response.data.value);
         response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_limits?prop=umid&type=sup&nodeId=${nodeId}`);
         setUmiditateSup(response.data.value);
-
-        response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_data?meas=baterie&time=current&nodeId=${nodeId}`);
-        setBaterie(response.data.values);
-        response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_limits?prop=bat&type=inf&nodeId=${nodeId}`);
-        setBaterieInf(response.data.value);
-        response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_limits?prop=bat&type=sup&nodeId=${nodeId}`);
-        setBaterieSup(response.data.value);
 
         response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_data?meas=iluminare&time=current&nodeId=${nodeId}`);
         setLumina(response.data.values);
@@ -176,6 +160,10 @@ export function NodeCard({ nodeId }) {
         response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_limits?prop=apa&type=sup&nodeId=${nodeId}`);
         setApaSup(response.data.value);
 
+        response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/usa?nodeId=${nodeId}`);
+        if (response.data.value == 1) setUsa('Deschisă');
+        else setUsa('Închisă');
+
        // response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_data?meas=usa&time=current&nodeId=${nodeId}`);
         //setUsa(response.data.values);
       } catch (error) {
@@ -190,12 +178,11 @@ export function NodeCard({ nodeId }) {
       //return () => clearInterval(interval); // Clean up the interval on component unmount
     }, []);
 
-    const categorii = ['Temperatură', 'Umiditate', 'Nivel apa', 'Iluminare', 'Baterie'];
-    const coloane_sql = ['temperatura', 'umiditate', 'nivel_apa', 'iluminare', 'baterie'];
+    const categorii = ['Temperatură', 'Umiditate', 'Nivel apa', 'Iluminare'];
+    const coloane_sql = ['temperatura', 'umiditate', 'nivel_apa', 'iluminare'];
     const [value, setValue] = useState(0);
     const modifyValue = (amount: SetStateAction<number>) => {
       setValue(amount);
-      console.log(amount);
     };
     const [indiceCategorie, setIndiceCategorie] = useState(0);
     const modifyIndiceCategorie = (amount: number) => {
@@ -223,13 +210,11 @@ export function NodeCard({ nodeId }) {
     );
     useEffect(() => {
       // Fetch data from API 3
-      console.log('test');
       const fetchData3 = async () => {
         try {
           const response = await axios.get(`https://site-licenta-10aff3814de1.herokuapp.com/poll_data?meas=${coloane_sql[indiceCategorie]}&time=${perioadeTimp[perioadaTimp]}&nodeId=${nodeId}`);
           setXValues_n(response.data.date);
           setYValues_n(response.data.values);
-          console.log(perioadeTimp[perioadaTimp]);
         } catch (error) {
           console.error('Error fetching data from API 2:', error);
         }
@@ -238,16 +223,17 @@ export function NodeCard({ nodeId }) {
       fetchData3();
     }, [perioadaTimp]);
     const stats = data.map((stat) => (
-      <StatCard stat={stat} id_node={nodeId} />
+      <StatCard stat={stat} id_node={nodeId} nodeType={nodeType} />
     ));
     const PRIMARY_COL_HEIGHT = rem(300);
     const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - var(--mantine-spacing-md) / 2)`;
-    window.console.log(nodeId);
     return (
       <>
         <div className={classes.card}>
-        <Grid cols={{ base: 1, sm: 2 }} spacing="md">
-          <Grid.Col span={{ sm: 8 }}>
+        <div style={{ fontSize: '18px' }}>Nodul {nodeId}</div>
+        <Grid cols={{ base: 1, xl: 2 }} spacing="md">
+        {(nodeType != 2) && (
+          <Grid.Col span={{ xl: 7 }}>
             <Group justify="space-between">
               <Group>
                 <UnstyledButton
@@ -300,8 +286,8 @@ export function NodeCard({ nodeId }) {
               </UnstyledButton>
             </Group>
             <Line options={options} data={data1} className={classes.graph} />
-          </Grid.Col>
-          <Grid.Col span={{ sm: 4 }}>
+          </Grid.Col>)}
+          <Grid.Col span={{ xl: 5 }}>
             <Grid gutter="md">
               <Grid.Col span={{ base: 6, xs: 4 }}>
                 {stats[0]}
@@ -309,18 +295,18 @@ export function NodeCard({ nodeId }) {
               <Grid.Col span={{ base: 6, xs: 4 }}>
                 {stats[1]}
               </Grid.Col>
+              {(nodeType != 2) && (
               <Grid.Col span={{ base: 6, xs: 4 }}>
                 {stats[2]}
-              </Grid.Col>
+              </Grid.Col>)}
+              {(nodeType != 2) && (
               <Grid.Col span={{ base: 6, xs: 4 }}>
                 {stats[3]}
-              </Grid.Col>
+              </Grid.Col>)}
+              {(nodeType != 2) && (
               <Grid.Col span={{ base: 6, xs: 4 }}>
                 {stats[4]}
-              </Grid.Col>
-              <Grid.Col span={{ base: 6, xs: 4 }}>
-                {stats[5]}
-              </Grid.Col>
+              </Grid.Col>)}
             </Grid>
           </Grid.Col>
         </Grid>
