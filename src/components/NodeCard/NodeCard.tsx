@@ -221,7 +221,8 @@ export function NodeCard({ nodeId, nodeType }) {
       };
 
       fetchData3();
-    }, [perioadaTimp]);
+    }, [perioadaTimp, indiceCategorie]);
+
     const stats = data.map((stat) => (
       <StatCard stat={stat} id_node={nodeId} nodeType={nodeType} />
     ));
