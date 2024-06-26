@@ -45,15 +45,15 @@ export function StatCard({ stat, id_node, nodeType }) {
       pollControl();
     }, []);
 
-    const [value, setValue] = useState(0);
-    const modifyValue = (amount: SetStateAction<number>) => {
-      setValue(amount);
+    const modifyLimInf = (event) => {
+      if (event.key === 'Enter') {
+        postLimits('inf', parseInt(event.currentTarget.value, 10));
+      }
     };
-    const modifyLimInf = (amount: SetStateAction<number>) => {
-        postLimits('inf', amount);
-      };
-    const modifyLimSup = (amount: SetStateAction<number>) => {
-        postLimits('sup', amount);
+    const modifyLimSup = (event) => {
+      if (event.key === 'Enter') {
+        postLimits('sup', parseInt(event.currentTarget.value, 10));
+      }
     };
     const [indiceCategorie, setIndiceCategorie] = useState(0);
     const modifyIndiceCategorie = (amount: number) => {
