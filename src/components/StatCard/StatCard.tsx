@@ -14,22 +14,40 @@ export function StatCard({ stat, id_node, nodeType }) {
     const [lower_lim, setLoweLim] = useState(null);
     const [isCheckedLight, setIsCheckedLight] = useState(null);
     const [isCheckedTemp, setIsCheckedTemp] = useState(null);
+    const [inputValueLow, setInputValueLow] = useState(null);
+    const [inputValueUp, setInputValueUp] = useState(null);
+    const postLimits = async (type, val) => {
+      try {
+          const response = await axios.post('https://site-licenta-10aff3814de1.herokuapp.com/add_limit', {
+              nodeId: id_node,
+              prop: stat.db,
+              type,
+              val,
+          });
+      } catch (error) { /* empty */ }
+  };
+
+    const handleInputChangeLow = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValueLow(e.target.value);
+    };
+    const handleKeyPressLow = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        postLimits('inf', (parseInt(inputValueLow, 10)));
+      }
+    };
+    const handleInputChangeUp = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValueUp(e.target.value);
+    };
+    const handleKeyPressUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        postLimits('sup', (parseInt(inputValueUp, 10)));
+      }
+    };
     const dark = colorScheme === 'dark';
     useEffect(() => {
       document.documentElement.style.setProperty('--paper-bg-color', dark ? '#495057' : '#ffffff');
       document.documentElement.style.setProperty('--main-bg-color', dark ? '#373A40' : '#099cff');
     }, [dark]);
-
-    const postLimits = async (type, val) => {
-        try {
-            const response = await axios.post('https://site-licenta-10aff3814de1.herokuapp.com/add_limit', {
-                nodeId: id_node,
-                prop: stat.db,
-                type,
-                val,
-            });
-        } catch (error) { /* empty */ }
-    };
 
     const pollControl = async () => {
       try {
@@ -45,15 +63,15 @@ export function StatCard({ stat, id_node, nodeType }) {
       pollControl();
     }, []);
 
-    const modifyLimInf = (event) => {
-      if (event.key === 'Enter') {
-        postLimits('inf', parseInt(event.currentTarget.value, 10));
-      }
+    const [value, setValue] = useState(0);
+    const modifyValue = (amount: SetStateAction<number>) => {
+      setValue(amount);
     };
-    const modifyLimSup = (event) => {
-      if (event.key === 'Enter') {
-        postLimits('sup', parseInt(event.currentTarget.value, 10));
-      }
+    const modifyLimInf = (amount: SetStateAction<number>) => {
+        postLimits('inf', amount);
+      };
+    const modifyLimSup = (amount: SetStateAction<number>) => {
+        postLimits('sup', amount);
     };
     const [indiceCategorie, setIndiceCategorie] = useState(0);
     const modifyIndiceCategorie = (amount: number) => {
@@ -139,7 +157,9 @@ export function StatCard({ stat, id_node, nodeType }) {
                     {(stat.label != 'Ușă') && (
                     <TextInput
                       value={lower_lim}
-                      onChange={(event) => modifyLimInf(parseInt(event.currentTarget.value, 10))}
+                      onChange={handleInputChangeLow}
+                      onKeyPress={handleKeyPressLow}
+                      //onChange={(event) => modifyLimInf(parseInt(event.currentTarget.value, 10))}
                       style={{ width: '70px' }}
                       type="number"
                       placeholder={stat.lower_lim}
@@ -156,7 +176,9 @@ export function StatCard({ stat, id_node, nodeType }) {
                     {(stat.label != 'Ușă') && (
                     <TextInput
                       value={upper_lim}
-                      onChange={(event) => modifyLimSup(parseInt(event.currentTarget.value, 10))}
+                      //onChange={(event) => modifyLimSup(parseInt(event.currentTarget.value, 10))}
+                      onChange={handleInputChangeUp}
+                      onKeyPress={handleKeyPressUp}
                       style={{ width: '70px' }}
                       type="number"
                       placeholder={stat.upper_lim}
